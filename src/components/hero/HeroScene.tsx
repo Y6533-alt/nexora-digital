@@ -109,7 +109,9 @@ export function HeroScene() {
       mouse.y += (mouse.ty - mouse.y) * 0.05
 
       // Drop resolution rather than frame rate when the device struggles.
-      slowFrames = dt > 30 ? slowFrames + 1 : Math.max(0, slowFrames - 1)
+      // A long gap means the page was paused or throttled, which says nothing about the device.
+      if (dt > 250) slowFrames = 0
+      else slowFrames = dt > 30 ? slowFrames + 1 : Math.max(0, slowFrames - 1)
       if (slowFrames > 24 && quality > 0.4) {
         quality *= 0.8
         slowFrames = 0
